@@ -22,3 +22,7 @@
 /*.is-done {*/
 /*  opacity: 0.5;*/
 /*}*/
+
+ul {
+    list-style: none;
+}

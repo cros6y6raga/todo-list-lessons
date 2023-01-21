@@ -1,22 +1,27 @@
 import React, {ChangeEvent, useState} from 'react';
 
-type PropsType = {
-    title: string
-    callBack: (newTitle: string) => void
+type EditableSpanPropsType = {
+    value: string
+    onChange: (newValue: string) => void
 }
-export const EditableSpan = (props: PropsType) => {
-    let [newTitle, setNewTitle] = useState(props.title)
-    const [edit, setEdit] = useState(false)
-    const editFooHandler = () => {
-        setEdit(!edit)
-        props.callBack(newTitle)
+
+export function EditableSpan(props: EditableSpanPropsType) {
+    let [editMode, setEditMode] = useState(false);
+    let [title, setTitle] = useState(props.value);
+
+    const activateEditMode = () => {
+        setEditMode(true);
+        setTitle(props.value);
     }
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setNewTitle(e.currentTarget.value)
+    const activateViewMode = () => {
+        setEditMode(false);
+        props.onChange(title);
     }
-    return (
-        edit
-            ? <input value={newTitle} onBlur={editFooHandler} autoFocus onChange={onChangeHandler}/>
-            : <span onDoubleClick={editFooHandler}>{props.title}</span>
-    );
-};
+    const changeTitle = (e: ChangeEvent<HTMLInputElement>) => {
+        setTitle(e.currentTarget.value)
+    }
+
+    return editMode
+        ? <input value={title} onChange={changeTitle} autoFocus onBlur={activateViewMode}/>
+        : <span onDoubleClick={activateEditMode}>{props.value}</span>
+}

@@ -32,25 +32,17 @@ export function AddItemForm(props: AddItemFormPropsType) {
     }
 
     return <div>
-        {/*<input value={title}*/}
-        {/*       onChange={onChangeHandler}*/}
-        {/*       onKeyPress={onKeyPressHandler}*/}
-        {/*       className={error ? "error" : ""}*/}
-        {/*/>*/}
         <TextField
             size={'small'}
             value={title}
             id="outlined-basic"
-            label={error ? "Title is required" :"Outlined"}
+            label={error ? "Title is required" : "Outlined"}
             variant="outlined"
             error={!!error}
             onChange={onChangeHandler}
             onKeyPress={onKeyPressHandler}
         />
-        {/*<button onClick={addItem}>+</button>*/}
         <Button size='small' variant="contained" onClick={addItem}
                 style={{maxWidth: '38px', maxHeight: '38px', minWidth: '38px', minHeight: '38px'}}>+</Button>
-
-        {/*{error && <div className="error-message">{error}</div>}*/}
     </div>
 }

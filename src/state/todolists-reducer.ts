@@ -1,62 +1,67 @@
 import {FilterValuesType, TodolistType} from '../App';
-import {v1} from "uuid";
+import {v1} from 'uuid';
 
-export const TodolistsReducer = (state: TodolistType[], action: TsarType) => {
+export type RemoveTodolistActionType = {
+    type: 'REMOVE-TODOLIST',
+    id: string
+}
+export type AddTodolistActionType = {
+    type: 'ADD-TODOLIST',
+    title: string
+}
+export type ChangeTodolistTitleActionType = {
+    type: 'CHANGE-TODOLIST-TITLE',
+    id: string
+    title: string
+}
+export type ChangeTodolistFilterActionType = {
+    type: 'CHANGE-TODOLIST-FILTER',
+    id: string
+    filter: FilterValuesType
+}
+
+type ActionsType =
+    RemoveTodolistActionType
+    | AddTodolistActionType
+    | ChangeTodolistTitleActionType
+    | ChangeTodolistFilterActionType;
+
+export const todolistsReducer = (state: Array<TodolistType>, action: ActionsType) => {
     switch (action.type) {
-        case 'REMOVE-TODOLIST': {
-            return state.filter(el => el.id !== action.payload.id)
-        }
-        case 'ADD-TODOLIST': {
-            const newIDTodo = v1()
-            const newTodolistTitle = {id: newIDTodo, title: action.payload.title, filter: 'all'}
-            return [...state, newTodolistTitle]
-        }
+        case 'REMOVE-TODOLIST':
+            return state.filter(tl => tl.id != action.id)
+        case 'ADD-TODOLIST':
+            return [...state, {id: v1(), title: action.title, filter: "all"}]
         case 'CHANGE-TODOLIST-TITLE': {
-            return state.map(el => el.id === action.payload.id ? {...el, title: action.payload.title} : el)
+            const todolist = state.find(tl => tl.id === action.id);
+            if (todolist) {
+                // если нашёлся - изменим ему заголовок
+                todolist.title = action.title;
+            }
+            return [...state]
         }
         case 'CHANGE-TODOLIST-FILTER': {
-            return state.map(el => el.id === action.payload.id ? {...el, filter: action.payload.filter} : el)
+            const todolist = state.find(tl => tl.id === action.id);
+            if (todolist) {
+                // если нашёлся - изменим ему заголовок
+                todolist.filter = action.filter;
+            }
+            return [...state];
         }
         default:
-            return state
+            throw new Error("I don't understand this type")
     }
 }
 
-type TsarType = removeTodolistACType | addTodolistACType | changeTodolistTitleACType | changeFilterACType
-
-type removeTodolistACType = ReturnType<typeof removeTodolistAC>
-type addTodolistACType = ReturnType<typeof addTodolistAC>
-export const removeTodolistAC = (id: string) => {
-    return {
-        type: 'REMOVE-TODOLIST',
-        payload: {id}
-    } as const
+export const RemoveTodolistAC = (todolistId: string): RemoveTodolistActionType => {
+    return {type: 'REMOVE-TODOLIST', id: todolistId}
 }
-export const addTodolistAC = (title: string) => {
-    return {
-        type: 'ADD-TODOLIST',
-        payload: {title}
-    } as const
+export const AddTodolistAC = (title: string): AddTodolistActionType => {
+    return {type: 'ADD-TODOLIST', title: title}
 }
-
-type changeTodolistTitleACType = ReturnType<typeof changeTodolistTitleAC>
-
-export const changeTodolistTitleAC = (id: string, title: string) => {
-    return {
-        type: 'CHANGE-TODOLIST-TITLE',
-        payload: {
-            id, title
-        }
-    } as const
+export const ChangeTodolistTitleAC = (todolistId: string, title: string): ChangeTodolistTitleActionType => {
+    return {type: 'CHANGE-TODOLIST-TITLE', title: title, id: todolistId}
 }
-
-type changeFilterACType = ReturnType<typeof changeFilterAC>
-
-export const changeFilterAC = (id: string, filter: FilterValuesType) => {
-    return {
-        type: 'CHANGE-TODOLIST-FILTER',
-        payload: {
-            id, filter
-        }
-    } as const
+export const ChangeTodolistFilterAC = (todolistId: string, filter: FilterValuesType): ChangeTodolistFilterActionType => {
+    return {type: 'CHANGE-TODOLIST-FILTER', filter: filter, id: todolistId}
 }

@@ -3,10 +3,8 @@ import './App.css';
 import {TaskType, Todolist} from './Todolist';
 import {v1} from 'uuid';
 import {AddItemForm} from './AddItemForm';
-import AppBar from '@mui/material/AppBar/AppBar';
-import {Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
-import {Menu} from "@mui/icons-material";
-
+import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@material-ui/core';
+import {Menu} from '@material-ui/icons';
 
 export type FilterValuesType = "all" | "active" | "completed";
 export type TodolistType = {
@@ -15,7 +13,7 @@ export type TodolistType = {
     filter: FilterValuesType
 }
 
-type TasksStateType = {
+export type TasksStateType = {
     [key: string]: Array<TaskType>
 }
 
@@ -153,7 +151,7 @@ function App() {
                                 tasksForTodolist = allTodolistTasks.filter(t => t.isDone === true);
                             }
 
-                            return <Grid key={tl.id} item>
+                            return <Grid item>
                                 <Paper style={{padding: "10px"}}>
                                     <Todolist
                                         key={tl.id}

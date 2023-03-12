@@ -71,8 +71,9 @@ function AppWithReducers() {
     }
 
     function removeTodolist(id: string) {
-        dispatchToTodolists(removeTodolistAC(id))
-        dispatchToTasks(removeTodolistAC(id))
+        let action = removeTodolistAC(id)
+        dispatchToTodolists(action)
+        dispatchToTasks(action)
     }
 
     function changeTodolistTitle(id: string, title: string) {
@@ -80,7 +81,9 @@ function AppWithReducers() {
     }
 
     function addTodolist(title: string) {
-        dispatchToTodolists(addTodolistAC(title))
+        let action = addTodolistAC(title)
+        dispatchToTodolists(action)
+        dispatchToTasks(action)
     }
 
     return (
